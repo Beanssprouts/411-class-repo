@@ -1,12 +1,23 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 import os
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return {"response": "Hello, World!", "status": 200}
+    return jsonify({
+        "response": "Hello, World!",
+        "status": 200
+    })
+
+@app.route('/repeat')
+def repeat():
+    input_text = request.args.get('input', '')
+    return jsonify({
+        "body": input_text,
+        "status": 200
+    })
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))  # Default to 5000 if PORT not set
+    port = int(os.getenv('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
