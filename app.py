@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import os
+import time
 
 app = Flask(__name__)
 
@@ -26,6 +27,15 @@ def health():
         "status": 200
     })
 
+@app.route('/hang')
+def hang():
+    while True:
+        time.sleep(1)
+    return jsonify({
+        "body": "This will never be reached",
+        "status": 200
+    })
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, threaded=False)
